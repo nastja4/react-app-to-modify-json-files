@@ -1,8 +1,23 @@
 import React, { useState } from 'react';
+import Form from '@rjsf/core';
+import { dataSchema } from './dataSchema';  // Import JSON schema definition
 
 const App: React.FC = () => {
   const [jsonData, setJsonData] = useState<any>(null); // State to store JSON data
   const [jsonText, setJsonText] = useState<string>(''); // State to store JSON text
+
+  const [formData, setFormData] = useState<any>(null);
+
+
+  const handleFormChange = ({ formData }: any) => {
+    setFormData(formData);
+  };
+
+  const handleSubmit = ({ formData }: any) => {
+    // Handle form submission (e.g., update JSON data)
+    setFormData(formData);
+  };
+
 
   // Function to handle file upload
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,9 +45,21 @@ const App: React.FC = () => {
     }
   };
 
+  const addKey = () => {
+    // Here logic to add a new key-value pair to the JSON data
+  };
+
+  const deleteKey = (key: string) => {
+    // Here logic to delete a key from the JSON data
+  };
+  
+  const addDataParser = () => {
+    // Here logic to add a new object to the dataParsers array
+  }
+
   // Function to save JSON data
   const saveJsonData = () => {
-    // Implement saving logic here
+    // Here saving logic 
     console.log('Saving JSON data:', jsonData);
   };
 
@@ -49,8 +76,18 @@ const App: React.FC = () => {
             cols={50}
           />
           <button onClick={saveJsonData}>Save</button>
+          <button onClick={addKey}>Add Key</button>
+          <button onClick={() => deleteKey('keyToDelete')}>Delete Key</button>
+          <button onClick={addDataParser}>Add Data Parser</button>
         </>
       )}
+  
+      <Form
+        schema={dataSchema}
+        formData={formData}
+        onChange={handleFormChange}
+        onSubmit={handleSubmit}
+      />
     </div>
   );
 };
@@ -58,86 +95,3 @@ const App: React.FC = () => {
 export default App;
 
 
-
-
-// // App.tsx
-// import React, { useState } from 'react';
-// import JSONEditor from './JSONEditor';
-// import SaveButton from './SaveButton';
-// import ResetButton from './ResetButton';
-// import Feedback from './Feedback';
-
-// interface Data {
-//   [key: string]: any;
-// }
-
-// const App: React.FC = () => {
-//   const [jsonData, setJsonData] = useState<Data>({});
-//   const [originalData, setOriginalData] = useState<Data>({});
-//   const [feedbackMessage, setFeedbackMessage] = useState<string>('');
-
-//   const handleDataChange = (data: Data) => {
-//     setJsonData(data);
-//   };
-
-//   const handleSave = () => {
-//     // Implement save functionality
-//   };
-
-//   const handleReset = () => {
-//     setJsonData(originalData);
-//     setFeedbackMessage('Data reset successfully');
-//   };
-
-//   return (
-//     <div className="app">
-//       <h1>JSON Editor</h1>
-//       <JSONEditor jsonData={jsonData} onDataChange={handleDataChange} />
-//       <div className="button-container">
-//         <SaveButton onSave={handleSave} />
-//         <ResetButton onReset={handleReset} />
-//       </div>
-//       <Feedback message={feedbackMessage} />
-//     </div>
-//   );
-// };
-
-// export default App;
-
-
-
-
-
-
-
-
-
-
-
-
-// import React from 'react';
-// import logo from './logo.svg';
-// import './App.css';
-
-// function App() {
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         <img src={logo} className="App-logo" alt="logo" />
-//         <p>
-//           Edit <code>src/App.tsx</code> and save to reload.
-//         </p>
-//         <a
-//           className="App-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Learn React
-//         </a>
-//       </header>
-//     </div>
-//   );
-// }
-
-// export default App;
