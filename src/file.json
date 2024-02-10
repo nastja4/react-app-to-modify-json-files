@@ -1,0 +1,63 @@
+{
+  "SystemConfig": {
+    "cloud": {
+      "certPath": "/usr/local/"
+    },
+    "hardware": {
+      "lte": {
+        "use": true
+      },
+      "adc": {
+        "batteryI2cAddr": "0x41"
+      }
+    },
+    "voltage": {
+      "battery": {
+        "min": 0,
+        "max": 50,
+        "default": 12.5
+      }
+    },
+    "dataParsers": [
+      {
+        "id": 0,
+        "sensor": {
+          "hwid": "013701C5"
+        },
+        "use": true,
+        "position": [
+          -1.275,
+          0.35,
+          1.05,
+          0
+        ]
+      },
+      {
+        "id": 2,
+        "sensor": {
+          "hwid": "013701C1"
+        },
+        "use": true,
+        "position": [
+          1.275,
+          0.35,
+          1.05,
+          0
+        ]
+      },
+      {
+        "id": 4,
+        "sensor": {
+          "hwid": "013701AB"
+        },
+        "use": true,
+        "position": [
+          0,
+          0,
+          0.88,
+          0
+        ]
+      }
+    ]
+  }
+}
