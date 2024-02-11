@@ -1,4 +1,9 @@
-export const dataSchema = {
+import { JSONSchema7 } from 'json-schema';
+
+// The schema (the TypeScript code) matches the structure and types of the JSON 
+// file, ensuring that the data conforms to the expected format and types
+
+export const dataSchema: JSONSchema7 = {
   type: "object",
   properties: {
     SystemConfig: {
@@ -7,7 +12,7 @@ export const dataSchema = {
         cloud: {
           type: "object",
           properties: {
-            certPath: {type: "string"}
+            certPath: { type: "string" }
           },
           required: ["certPath"]
         },
@@ -60,4 +65,4 @@ export const dataSchema = {
     }
   },
   required: ["SystemConfig"]
-}
+};
