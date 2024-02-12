@@ -6,6 +6,10 @@
       "dom.iterable",
       "esnext"
     ],
+    "exclude": [
+      "App_old.tsx",
+      "dataSchema_old.ts"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,

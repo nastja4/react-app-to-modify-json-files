@@ -14,7 +14,7 @@ export const dataSchema: JSONSchema7 = {
           properties: {
             certPath: { type: "string" }
           },
-          required: ["certPath"]
+          required: ["certPath"] // ?
         },
         hardware: {
           type: "object",
@@ -22,7 +22,7 @@ export const dataSchema: JSONSchema7 = {
             lte: { type: "object", properties: { use: { type: "boolean" } } },
             adc: { type: "object", properties: { batteryI2cAddr: { type: "string" } } }
           },
-          required: ["lte", "adc"]
+          required: ["lte", "adc"]  // ?
         },
         voltage: {
           type: "object",
@@ -34,10 +34,10 @@ export const dataSchema: JSONSchema7 = {
                 max: { type: "number" },
                 default: { type: "number" }
               },
-              required: ["min", "max", "default"]
+              required: ["min", "max", "default"] // ?
             }
           },
-          required: ["battery"]
+          required: ["battery"] // ?
         },
         dataParsers: {
           type: "array",
@@ -66,3 +66,4 @@ export const dataSchema: JSONSchema7 = {
   },
   required: ["SystemConfig"]
 };
+
