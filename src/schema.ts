@@ -1,9 +1,8 @@
 import { JSONSchema7 } from 'json-schema';
 
-// The schema (the TypeScript code) matches the structure and types of the JSON 
-// file, ensuring that the data conforms to the expected format and types
 
-export const dataSchema: JSONSchema7 = {
+// Define the JSON schema for configuration
+export const schema: JSONSchema7 = {
   type: "object",
   properties: {
     SystemConfig: {
@@ -12,17 +11,15 @@ export const dataSchema: JSONSchema7 = {
         cloud: {
           type: "object",
           properties: {
-            certPath: { type: "string" }
+            certPath: { type: "string" },
           },
-          required: ["certPath"] // ?
         },
         hardware: {
           type: "object",
           properties: {
             lte: { type: "object", properties: { use: { type: "boolean" } } },
-            adc: { type: "object", properties: { batteryI2cAddr: { type: "string" } } }
+            adc: { type: "object", properties: { batteryI2cAddr: { type: "string" } } },
           },
-          required: ["lte", "adc"]  // ?
         },
         voltage: {
           type: "object",
@@ -32,12 +29,10 @@ export const dataSchema: JSONSchema7 = {
               properties: {
                 min: { type: "number" },
                 max: { type: "number" },
-                default: { type: "number" }
+                default: { type: "number" },
               },
-              required: ["min", "max", "default"] // ?
-            }
+            },
           },
-          required: ["battery"] // ?
         },
         dataParsers: {
           type: "array",
@@ -45,25 +40,24 @@ export const dataSchema: JSONSchema7 = {
             type: "object",
             properties: {
               id: { type: "number" },
-              sensor: { 
+              sensor: {
                 type: "object",
-                properties: { hwid: { type: "string" } }
+                properties: {
+                  hwid: { type: "string" },
+                },
               },
               use: { type: "boolean" },
               position: {
                 type: "array",
                 items: { type: "number" },
-                minItems: 4, 
-                maxItems: 4
-              }
+                minItems: 4,
+                maxItems: 4,
+              },
             },
-            required: ["id", "sensor", "use", "position"]
-          }
-        }
+            required: ["id", "sensor", "use", "position"],
+          },
+        },
       },
-      required: ["cloud", "hardware", "voltage", "dataParsers"]
-    }
+    },
   },
-  required: ["SystemConfig"]
 };
-
