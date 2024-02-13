@@ -38,17 +38,28 @@ interface FormData {
   };
 }
 
-const App: React.FC = () => {
-  // const [formData, setFormData] = useState({});
+const downloadJson = (formData: FormData | {}, defaultFilename: string) => {
+  const filename = prompt("Enter file name:", defaultFilename) || defaultFilename;
+  
+  const blob = new Blob([JSON.stringify(formData, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
+
+const App: React.FC = () => {              // React.FC (FunctionComponent) is a TypeScript generic type used in React applications to define a functional component with TypeScript
   const [formData, setFormData] = useState<FormData | {}>({});  // The formData state is initialized with a type that can either be an empty object {} or FormData
 
-  // const handleChange = ({ formData }: any) => setFormData(formData);
-  // const handleChange = ({ formData }: { formData: FormData }) => setFormData(formData);
   const handleChange = (e: IChangeEvent<FormData>) => {      // @rjsf/core library's 'Form' component expects an onChange handler that receives an event object of type IChangeEvent<T>, T is the type of my form data (in this case, FormData).
     setFormData(e.formData ?? {});   // Using ?? operator to fallback to {} if e.formData is undefined
   };
-  const handleSubmit = () => console.log(formData);
 
+  const handleSubmit = () => console.log(formData);  //  could involve more complex operations like sending the data to a server
 
   // Function to handle file input change and load the JSON
   // Its purpose is to read the content of the selected file, parse it as JSON, and then update the component's state with this parsed JSON data
@@ -74,15 +85,19 @@ const App: React.FC = () => {
     }
   };
   
-
   //  custom validation function that conforms to both the schema and FormData structure
   const validator = customizeValidator<FormData>();
   
+  const handleDownload = () => {
+    downloadJson(formData, "JSONconfig.json");
+  };
+
+
   return (
-    <div style={{ display: 'flex' }}>
+    <div style={{ display: 'flex', margin: '20px' }}>
       <div>
-        <h2>Upload JSON Configuration File</h2>
-        <input type="file" accept=".json" onChange={handleFileChange} />
+        <h2>Upload JSON Configuration File <span style={{display: 'block'}}>(for display and editing)</span></h2>
+        <input type="file" accept=".json" onChange={handleFileChange} style={{ marginBottom: '10px' }} />     {/* // element lets users choose a .json file from their local device */}
         <Form 
           schema={schema}
           formData={formData}
@@ -90,14 +105,12 @@ const App: React.FC = () => {
           onSubmit={handleSubmit} // a button Submit
           // validator={validator as any}  // bypasses TypeScript's type checks
           validator={validator} // Passing the AJV validator here
-          // validator={validator as unknown as ValidatorType<FormData, RJSFSchema, any>}
         />
+        <button onClick={handleDownload} style={{ marginTop: '20px' }}>Download JSON File</button>
       </div>
       <div style={{ marginLeft: '40px' }}>
         <h2>JSON preview</h2>
-        {/* // <pre> tag is used to display the formData as a formatted JSON string.  */}
-        {/* converts the formData object to a JSON string with indentation (2) for readability  */}
-        <pre>{JSON.stringify(formData, null, 2)}</pre>   
+        <pre>{JSON.stringify(formData, null, 2)}</pre>   {/* // <pre> tag is used to display the formData as a formatted JSON string (with indentation (2) for readability) */}
       </div>
     </div>
   );
