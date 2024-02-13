@@ -1,12 +1,51 @@
 import React, { useState } from 'react';
 import Form from '@rjsf/core';
 import { schema } from './schema';
-import validator from '@rjsf/validator-ajv8'; // AJV validator package for JSON Schema validation with '@rjsf/core' (the used version of @rjsf/core require specifying a validator explicitly due to its type definitions)
+import validator from '@rjsf/validator-ajv8'; // AJV validator package for JSON Schema validation with '@rjsf/core' (the used version of @rjsf/core requires specifying a validator explicitly due to its type definitions)
+import { IChangeEvent } from '@rjsf/core';
+
+
+interface FormData {
+  // Structure matching expected JSON data
+  SystemConfig?: {
+    cloud?: {
+      certPath?: string;
+    };
+    hardware?: {
+      lte?: {
+        use: boolean;
+      };
+      adc?: {
+        batteryI2cAddr?: string;
+      };
+    };
+    voltage?: {
+      battery?: {
+        min: number;
+        max: number;
+        default: number;
+      };
+    };
+    dataParsers?: Array<{
+      id: number;
+      sensor: {
+        hwid: string;
+      };
+      use: boolean;
+      position: number[];
+    }>;
+  };
+}
 
 const App: React.FC = () => {
-  const [formData, setFormData] = useState({});
+  // const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState<FormData | {}>({});  // The formData state is initialized with a type that can either be an empty object {} or FormData
 
-  const handleChange = ({ formData }: any) => setFormData(formData);
+  // const handleChange = ({ formData }: any) => setFormData(formData);
+  // const handleChange = ({ formData }: { formData: FormData }) => setFormData(formData);
+  const handleChange = (e: IChangeEvent<FormData>) => {      // @rjsf/core library's 'Form' component expects an onChange handler that receives an event object of type IChangeEvent<T>, T is the type of my form data (in this case, FormData).
+    setFormData(e.formData ?? {});   // Using ?? operator to fallback to {} if e.formData is undefined
+  };
   const handleSubmit = () => console.log(formData);
 
 
@@ -34,6 +73,7 @@ const App: React.FC = () => {
     }
   };
 
+  
   return (
     <div style={{ display: 'flex' }}>
       <div>

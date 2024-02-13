@@ -54,7 +54,7 @@ export const schema: JSONSchema7 = {
                 maxItems: 4,
               },
             },
-            required: ["id", "sensor", "use", "position"],
+            required: ["id", "sensor", "use", "position"],  // the keys are marked with 'required' due to their necessity
           },
         },
       },
