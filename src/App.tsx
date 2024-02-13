@@ -1,22 +1,23 @@
 import React, { useState } from 'react';
 import Form from '@rjsf/core';
 import { schema } from './schema';
-import validator from '@rjsf/validator-ajv8'; // AJV validator package for JSON Schema validation with '@rjsf/core' (the used version of @rjsf/core requires specifying a validator explicitly due to its type definitions)
-import { IChangeEvent } from '@rjsf/core';
+// import validator from '@rjsf/validator-ajv8'; // AJV validator package for JSON Schema validation with '@rjsf/core' (the used version of @rjsf/core requires specifying a validator explicitly due to its type definitions)
+import { customizeValidator } from '@rjsf/validator-ajv8';
+import { IChangeEvent } from '@rjsf/core';  //  IChangeEvent is part of the React JSON Schema Form (@rjsf/core) library's type definitions, designed to type the event object passed to form event handlers like onChange.
 
 
 interface FormData {
   // Structure matching expected JSON data
   SystemConfig?: {
     cloud?: {
-      certPath?: string;
+      certPath: string;
     };
     hardware?: {
       lte?: {
         use: boolean;
       };
       adc?: {
-        batteryI2cAddr?: string;
+        batteryI2cAddr: string;
       };
     };
     voltage?: {
@@ -51,7 +52,7 @@ const App: React.FC = () => {
 
   // Function to handle file input change and load the JSON
   // Its purpose is to read the content of the selected file, parse it as JSON, and then update the component's state with this parsed JSON data
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {  // React.ChangeEvent<HTMLInputElement> indicates that the function expects an event argument of type ChangeEvent from an <input> element.
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {      // React.ChangeEvent<HTMLInputElement> indicates that the function expects an event argument of type ChangeEvent from an <input> element.
     const fileReader = new FileReader();                      // 'FileReader' is a Web API that allows for asynchronous reading of the contents of files (or raw data buffers) stored on the user's computer.
 
     if (event.target.files && event.target.files.length > 0) {   // 'event.target.files' is a FileList object representing the files selected by the user. The code checks that this object exists and contains at least one file.
@@ -72,7 +73,10 @@ const App: React.FC = () => {
       };
     }
   };
+  
 
+  //  custom validation function that conforms to both the schema and FormData structure
+  const validator = customizeValidator<FormData>();
   
   return (
     <div style={{ display: 'flex' }}>
@@ -84,7 +88,9 @@ const App: React.FC = () => {
           formData={formData}
           onChange={handleChange}
           onSubmit={handleSubmit} // a button Submit
-          validator={validator}
+          // validator={validator as any}  // bypasses TypeScript's type checks
+          validator={validator} // Passing the AJV validator here
+          // validator={validator as unknown as ValidatorType<FormData, RJSFSchema, any>}
         />
       </div>
       <div style={{ marginLeft: '40px' }}>

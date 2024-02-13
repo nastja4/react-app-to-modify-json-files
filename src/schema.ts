@@ -45,6 +45,7 @@ export const schema: JSONSchema7 = {
                 properties: {
                   hwid: { type: "string" },
                 },
+                required: ["hwid"]                   // required
               },
               use: { type: "boolean" },
               position: {
@@ -54,7 +55,7 @@ export const schema: JSONSchema7 = {
                 maxItems: 4,
               },
             },
-            required: ["id", "sensor", "use", "position"],  // the keys are marked with 'required' due to their necessity
+            required: ["id", "sensor", "use", "position"]  // 'required' due to keys' necessity
           },
         },
       },
